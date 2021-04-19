@@ -1,0 +1,61 @@
+@import "../../styles/variables";
+
+.base-table {
+  overflow-x: auto;
+  border-collapse: collapse;
+  position: relative;
+  width: 100%;
+  background-color: $accent-color--light;
+  border-radius: $border-radius;
+
+  &__no-results {
+    color: $accent-color--dark;
+    width: 100%;
+    padding: 1.5rem;
+    text-align: center;
+  }
+
+  &__header {
+    position: relative;
+    border-bottom: 1px solid $primary-color--dark;
+    background-color: $primary-color;
+    color: $accent-color--light;
+
+    &-column {
+      font-weight: 600;
+      padding: 1rem;
+      border-right: 1px solid $accent-color--light;
+
+      &:first-child {
+        border-radius: $border-radius 0 0 0;
+      }
+      &:last-child {
+        border-radius: 0 $border-radius 0 0;
+        border-right: none;
+      }
+    }
+  }
+
+  &__body {
+    position: relative;
+  }
+
+  &__cell {
+    vertical-align: middle;
+    border-top: 1px solid #000;
+    border-right: 1px solid #000;
+    padding: $xs-spacing;
+
+    &:last-child {
+      border-right: none;
+    }
+  }
+}
+
+// Media
+
+@media screen and (max-width: 768px) {
+  .base-table {
+    white-space: nowrap;
+  }
+}
