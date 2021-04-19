@@ -10,7 +10,12 @@
       <template v-if="!isEmpty">
         <tr class="base-table__row" v-for="item in data" :key="item.id">
           <td class="base-table__cell" v-for="column in columns" :key="column.value">
-            {{ item[column.value] }}
+            <span v-if="!isEmail(item[column.value])">
+              {{ item[column.value] }}
+            </span>
+            <a class="base-table__email" :href="`mailto:${item[column.value]}`" v-else>
+              {{ item[column.value] }}
+            </a>
           </td>
         </tr>
       </template>
@@ -28,7 +33,7 @@ export default {
   name: 'BaseTable',
   props: {
     data: {
-      type: Object,
+      type: Array,
       required: true,
     },
     columns: {
@@ -38,8 +43,9 @@ export default {
   },
   setup(props) {
     const isEmpty = computed(() => props.data.length === 0);
+    const isEmail = (value) => value.match(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/);
 
-    return { isEmpty };
+    return { isEmpty, isEmail };
   },
 };
 </script>

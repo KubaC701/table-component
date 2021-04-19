@@ -1,6 +1,6 @@
 <template>
   <base-table :data="data" :columns="columns" v-if="data" />
-  <p v-if="loading">Loading</p>
+  <p v-if="isLoading">Loading</p>
 </template>
 
 <script>
