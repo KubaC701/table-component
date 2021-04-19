@@ -1,0 +1,38 @@
+@import "./variables";
+
+html {
+  background-color: $background-color;
+  box-sizing: border-box;
+  color: $text-color;
+  font-family: "Open Sans", sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 0;
+}
+
+a {
+  color: var(--text-color);
+  text-decoration: none;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+.container {
+  margin: 0 auto;
+  max-width: 1440px;
+  min-height: 100vh;
+  padding: $s-spacing;
+}
