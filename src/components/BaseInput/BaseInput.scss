@@ -1,0 +1,14 @@
+@import "../../styles/variables";
+
+.base-input {
+  &__inner {
+    border: 2px solid $primary-color;
+    border-radius: $border-radius;
+    outline: none;
+    padding: $xs-spacing $s-spacing;
+
+    &:focus {
+      border-color: $primary-color--dark;
+    }
+  }
+}
