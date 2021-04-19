@@ -1,5 +1,13 @@
 <template>
-  <base-table :data="data" :columns="columns" v-if="data" />
+  <base-table
+    v-if="data"
+    :columns="columns"
+    :data="data"
+    :pagination="pagination"
+    :search="search"
+    :sorting="sorting"
+    @change="handleChange"
+  />
   <p v-if="isLoading">Loading</p>
 </template>
 
@@ -60,15 +68,21 @@ export default {
         error.value = errorMessage;
       },
       atLast: () => {
-        isLoading.value = true;
+        isLoading.value = false;
       },
     });
+
+    const handleChange = (newData) => {
+      console.log(newData);
+      data.value = newData;
+    };
 
     return {
       columns,
       data,
       error,
       isLoading,
+      handleChange,
     };
   },
 };

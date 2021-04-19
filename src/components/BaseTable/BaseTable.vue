@@ -2,22 +2,34 @@
   <table class="base-table">
     <thead class="base-table__header">
       <th class="base-table__header-column" v-for="column in columns" :key="column.value">
-        {{ column.label }}
+        <span v-if="sorting">
+          {{ column.label }}
+        </span>
+        <button
+          type="button"
+          v-else
+          @click="handleSort(column.value)"
+          class="base-table__header-button"
+        >
+          {{ column.label }}
+        </button>
       </th>
     </thead>
 
     <tbody class="base-table__body">
       <template v-if="!isEmpty">
-        <tr class="base-table__row" v-for="item in data" :key="item.id">
-          <td class="base-table__cell" v-for="column in columns" :key="column.value">
-            <span v-if="!isEmail(item[column.value])">
-              {{ item[column.value] }}
-            </span>
-            <a class="base-table__email" :href="`mailto:${item[column.value]}`" v-else>
-              {{ item[column.value] }}
-            </a>
-          </td>
-        </tr>
+        <transition-group name="base-table__flip">
+          <tr class="base-table__row" v-for="item in data" :key="item.id">
+            <td class="base-table__cell" v-for="column in columns" :key="column.value">
+              <span v-if="!isEmail(item[column.value])">
+                {{ item[column.value] }}
+              </span>
+              <a class="base-table__email" :href="`mailto:${item[column.value]}`" v-else>
+                {{ item[column.value] }}
+              </a>
+            </td>
+          </tr>
+        </transition-group>
       </template>
       <tr class="base-table__no-results" v-else>
         No results
@@ -27,7 +39,7 @@
 </template>
 
 <script>
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 
 export default {
   name: 'BaseTable',
@@ -40,12 +52,43 @@ export default {
       type: Array,
       required: true,
     },
+    sorting: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+    pagination: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+    search: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
   },
-  setup(props) {
+  setup(props, { emit }) {
     const isEmpty = computed(() => props.data.length === 0);
+    const order = ref(false);
     const isEmail = (value) => value.match(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/);
 
-    return { isEmpty, isEmail };
+    const handleSort = (column) => {
+      order.value = !order.value;
+      emit(
+        'change',
+        [...props.data].sort((a, b) => {
+          const columnA = a[column].toLowerCase();
+          const columnB = b[column].toLowerCase();
+
+          const sortAscending = columnA > columnB ? 1 : -1;
+          const sortDescending = columnA < columnB ? 1 : -1;
+          return order.value ? sortAscending : sortDescending;
+        }),
+      );
+    };
+
+    return { handleSort, isEmpty, isEmail };
   },
 };
 </script>
