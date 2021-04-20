@@ -1,27 +1,22 @@
 <template>
-  <base-input
-    v-model="query"
-    type="search"
-    name="search"
-    placeholder="Search"
-    class="user-table__input"
-    v-if="search"
-  />
-  <base-table
-    v-if="data"
-    :columns="columns"
-    :data="data"
-    :pagination="pagination"
-    :sorting="sorting"
-    @change="handleChange"
-  />
-  <base-pagination
-    :total="10"
-    :current="page"
-    :perPage="3"
-    :pageRange="5"
-    @page-change="page = $event"
-  />
+  <main class="user" v-if="data">
+    <base-input
+      v-model="query"
+      type="search"
+      name="search"
+      placeholder="Search"
+      class="user-table__input"
+      v-if="search"
+    />
+    <base-table
+      :columns="columns"
+      :data="data"
+      :pagination="pagination"
+      :sorting="sorting"
+      @change="handleChange"
+    />
+    <base-pagination :total="data.length" v-model:current="page" class="user-table__pagination"/>
+  </main>
   <p v-if="isLoading">Loading</p>
 </template>
 
