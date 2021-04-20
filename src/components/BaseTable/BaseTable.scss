@@ -10,8 +10,7 @@
 
   &__no-results {
     color: $accent-color--dark;
-    width: 100%;
-    padding: 1.5rem;
+    padding: $xs-spacing;
     text-align: center;
   }
 
@@ -67,10 +66,6 @@
 
   &__email {
     text-decoration: underline;
-  }
-
-  &__flip-move {
-    transition: transform 0.6s ease-in-out;
   }
 }
 

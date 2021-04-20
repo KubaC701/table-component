@@ -1,25 +1,44 @@
 <template>
+  <base-input
+    v-model="query"
+    type="search"
+    name="search"
+    placeholder="Search"
+    class="user-table__input"
+    v-if="search"
+  />
   <base-table
     v-if="data"
     :columns="columns"
     :data="data"
     :pagination="pagination"
-    :search="search"
     :sorting="sorting"
     @change="handleChange"
+  />
+  <base-pagination
+    :total="10"
+    :current="page"
+    :perPage="3"
+    :pageRange="5"
+    @page-change="page = $event"
   />
   <p v-if="isLoading">Loading</p>
 </template>
 
 <script>
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import BaseTable from '../BaseTable/BaseTable.vue';
+import BaseInput from '../BaseInput/BaseInput.vue';
+import BasePagination from '../BasePagination/BasePagination.vue';
+
 import fetchData from '../../helpers/fetchData';
 
 export default {
   name: 'UsersTable',
   components: {
     BaseTable,
+    BaseInput,
+    BasePagination,
   },
   props: {
     endpoint: {
@@ -45,8 +64,11 @@ export default {
   },
   setup(props) {
     const data = ref(null);
+    const fetchedData = ref(null);
     const error = ref('');
     const isLoading = ref(true);
+    const query = ref('');
+    const page = ref(0);
 
     const columns = computed(() => [
       { label: 'Name', value: 'name' },
@@ -58,11 +80,12 @@ export default {
 
     fetchData(props.endpoint, null, {
       resolve: (json) => {
-        data.value = json.map((element) => ({
+        fetchedData.value = json.map((element) => ({
           ...element,
           companyName: element.company.name,
           addressCity: element.address.city,
         }));
+        data.value = fetchedData.value;
       },
       reject: (errorMessage) => {
         error.value = errorMessage;
@@ -77,12 +100,22 @@ export default {
       data.value = newData;
     };
 
+    watch(query, () => {
+      data.value = fetchedData.value.filter((element) => {
+        const values = Object.values(element).map((el) => el.toString().toLowerCase());
+        return values.some((item) => item.includes(query.value.toLowerCase()));
+      });
+    });
+
     return {
       columns,
       data,
       error,
+      fetchedData,
       isLoading,
       handleChange,
+      query,
+      page,
     };
   },
 };

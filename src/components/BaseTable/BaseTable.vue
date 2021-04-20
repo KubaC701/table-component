@@ -18,21 +18,21 @@
 
     <tbody class="base-table__body">
       <template v-if="!isEmpty">
-        <transition-group name="base-table__flip">
-          <tr class="base-table__row" v-for="item in data" :key="item.id">
-            <td class="base-table__cell" v-for="column in columns" :key="column.value">
-              <span v-if="!isEmail(item[column.value])">
-                {{ item[column.value] }}
-              </span>
-              <a class="base-table__email" :href="`mailto:${item[column.value]}`" v-else>
-                {{ item[column.value] }}
-              </a>
-            </td>
-          </tr>
-        </transition-group>
+        <tr class="base-table__row" v-for="item in data" :key="item.id">
+          <td class="base-table__cell" v-for="column in columns" :key="column.value">
+            <span v-if="!isEmail(item[column.value])">
+              {{ item[column.value] }}
+            </span>
+            <a class="base-table__email" :href="`mailto:${item[column.value]}`" v-else>
+              {{ item[column.value] }}
+            </a>
+          </td>
+        </tr>
       </template>
-      <tr class="base-table__no-results" v-else>
-        No results
+      <tr v-else>
+        <td class="base-table__no-results" colspan="100%">
+          No results
+        </td>
       </tr>
     </tbody>
   </table>
@@ -62,12 +62,8 @@ export default {
       required: false,
       default: false,
     },
-    search: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
   },
+  emits: ['change'],
   setup(props, { emit }) {
     const isEmpty = computed(() => props.data.length === 0);
     const order = ref(false);

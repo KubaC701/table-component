@@ -7,7 +7,7 @@
       :name="name"
       :id="name"
       :placeholder="placeholder"
-      @input="$emit('update:modelValue')"
+      @input="$emit('update:modelValue', $event.target.value)"
       :type="type"
     />
   </div>
@@ -38,6 +38,11 @@ export default {
       default: '',
     },
     type: {
+      type: String,
+      required: false,
+      default: '',
+    },
+    value: {
       type: String,
       required: false,
       default: '',

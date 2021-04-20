@@ -1,0 +1,8 @@
+@import '../../styles/variables';
+
+.user-table {
+  &__input {
+    margin: 0 0 $s-spacing auto;
+    width: fit-content;
+  }
+}
