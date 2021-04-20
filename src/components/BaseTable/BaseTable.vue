@@ -1,41 +1,43 @@
 <template>
-  <table class="base-table">
-    <thead class="base-table__header">
-      <th class="base-table__header-column" v-for="column in columns" :key="column.value">
-        <span v-if="sorting">
-          {{ column.label }}
-        </span>
-        <button
-          type="button"
-          v-else
-          @click="handleSort(column.value)"
-          class="base-table__header-button"
-        >
-          {{ column.label }}
-        </button>
-      </th>
-    </thead>
+  <div class="base-table">
+    <table class="base-table__inner">
+      <thead class="base-table__header">
+        <th class="base-table__header-column" v-for="column in columns" :key="column.value">
+          <span v-if="sorting">
+            {{ column.label }}
+          </span>
+          <button
+            type="button"
+            v-else
+            @click="handleSort(column.value)"
+            class="base-table__header-button"
+          >
+            {{ column.label }}
+          </button>
+        </th>
+      </thead>
 
-    <tbody class="base-table__body">
-      <template v-if="!isEmpty">
-        <tr class="base-table__row" v-for="item in data" :key="item.id">
-          <td class="base-table__cell" v-for="column in columns" :key="column.value">
-            <span v-if="!isEmail(item[column.value])">
-              {{ item[column.value] }}
-            </span>
-            <a class="base-table__email" :href="`mailto:${item[column.value]}`" v-else>
-              {{ item[column.value] }}
-            </a>
+      <tbody class="base-table__body">
+        <template v-if="!isEmpty">
+          <tr class="base-table__row" v-for="item in data" :key="item.id">
+            <td class="base-table__cell" v-for="column in columns" :key="column.value">
+              <span v-if="!isEmail(item[column.value])">
+                {{ item[column.value] }}
+              </span>
+              <a class="base-table__email" :href="`mailto:${item[column.value]}`" v-else>
+                {{ item[column.value] }}
+              </a>
+            </td>
+          </tr>
+        </template>
+        <tr v-else>
+          <td class="base-table__no-results" colspan="100%">
+            No results
           </td>
         </tr>
-      </template>
-      <tr v-else>
-        <td class="base-table__no-results" colspan="100%">
-          No results
-        </td>
-      </tr>
-    </tbody>
-  </table>
+      </tbody>
+    </table>
+  </div>
 </template>
 
 <script>

@@ -13,7 +13,7 @@
       :data="rows"
       :pagination="pagination"
       :sorting="sorting"
-      @change="handleChange"
+      @change="data = $event"
     />
     <base-pagination
       :total="data.length"
@@ -117,7 +117,6 @@ export default {
     });
 
     const handleChange = (newData) => {
-      console.log(newData);
       data.value = newData;
     };
 
