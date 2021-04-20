@@ -1,24 +1,31 @@
-# table-component
+# Table component
 
-## Project setup
-```
-yarn install
-```
+It's a reusable Vue table component to display data.
 
-### Compiles and hot-reloads for development
-```
-yarn serve
-```
+## Configuration
 
-### Compiles and minifies for production
-```
-yarn build
-```
+1. Run `yarn` command
+2. Run `yarn start` command
+3. Go to http://localhost:8080
 
-### Lints and fixes files
-```
-yarn lint
-```
+## Scripts
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+- `yarn start` or `yarn serve` - Runs the app in the development mode.
+- `yarn build` - Builds the app for production.
+- `yarn lint` - Runs ESlint & Stylelint with auto fix.
+
+## Features
+
+- sorting
+- searching
+- pagination
+- modification column names by props
+
+## Folder structure
+
+- **public** - All static files such as icons or html files.
+  - **icons** - SVG icons.
+- **src** - All source code of the app.
+  - **components** - Vue components.
+  - **helpers** - Helpers function created to separate logic from components.
+  - **styles** - Styles configuration and global styles.
