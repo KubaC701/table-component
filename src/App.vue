@@ -1,5 +1,5 @@
 <template>
-  <users-table endpoint="https://jsonplaceholder.typicode.com/users" search />
+  <users-table endpoint="https://jsonplaceholder.typicode.com/users" search pagination/>
 </template>
 
 <script>

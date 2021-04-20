@@ -10,7 +10,7 @@
     />
     <base-table
       :columns="columns"
-      :data="chunks[page - 1] || []"
+      :data="rows"
       :pagination="pagination"
       :sorting="sorting"
       @change="handleChange"
@@ -20,25 +20,29 @@
       v-model:current="page"
       class="user-table__pagination"
       :perPage="ROWS_PER_PAGE"
+      v-if="pagination"
     />
   </main>
-  <p v-if="isLoading">Loading</p>
+  <base-loader v-if="isLoading" />
 </template>
 
 <script>
 import { computed, ref, watch } from 'vue';
-import BaseTable from '../BaseTable/BaseTable.vue';
+
 import BaseInput from '../BaseInput/BaseInput.vue';
+import BaseLoader from '../BaseLoader/BaseLoader.vue';
 import BasePagination from '../BasePagination/BasePagination.vue';
+import BaseTable from '../BaseTable/BaseTable.vue';
 
 import fetchData from '../../helpers/fetchData';
 
 export default {
   name: 'UsersTable',
   components: {
-    BaseTable,
     BaseInput,
+    BaseLoader,
     BasePagination,
+    BaseTable,
   },
   props: {
     endpoint: {
@@ -88,6 +92,13 @@ export default {
       return chunksArray;
     });
 
+    const rows = computed(() => {
+      if (!props.pagination) {
+        return data.value;
+      }
+      return chunks.value[page.value - 1] || [];
+    });
+
     fetchData(props.endpoint, null, {
       resolve: (json) => {
         fetchedData.value = json.map((element) => ({
@@ -127,6 +138,7 @@ export default {
       handleChange,
       query,
       page,
+      rows,
       ROWS_PER_PAGE,
     };
   },
