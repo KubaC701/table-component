@@ -19,7 +19,7 @@
 
       <tbody class="base-table__body">
         <template v-if="!isEmpty">
-          <tr class="base-table__row" v-for="item in data" :key="item.id">
+          <tr class="base-table__row" v-for="item in dataToDisplay" :key="item.id">
             <td class="base-table__cell" v-for="column in columns" :key="column.value">
               <span v-if="!isEmail(item[column.value])">
                 {{ item[column.value] }}
@@ -47,6 +47,10 @@ export default {
   name: 'BaseTable',
   props: {
     data: {
+      type: Array,
+      required: true,
+    },
+    dataToDisplay: {
       type: Array,
       required: true,
     },

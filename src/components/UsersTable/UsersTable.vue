@@ -10,7 +10,8 @@
     />
     <base-table
       :columns="columns"
-      :data="rows"
+      :dataToDisplay="rows"
+      :data="fetchedData"
       :pagination="pagination"
       :sorting="sorting"
       @change="data = $event"
