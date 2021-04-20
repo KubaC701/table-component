@@ -10,12 +10,17 @@
     />
     <base-table
       :columns="columns"
-      :data="data"
+      :data="chunks[page - 1] || []"
       :pagination="pagination"
       :sorting="sorting"
       @change="handleChange"
     />
-    <base-pagination :total="data.length" v-model:current="page" class="user-table__pagination"/>
+    <base-pagination
+      :total="data.length"
+      v-model:current="page"
+      class="user-table__pagination"
+      :perPage="ROWS_PER_PAGE"
+    />
   </main>
   <p v-if="isLoading">Loading</p>
 </template>
@@ -58,12 +63,14 @@ export default {
     },
   },
   setup(props) {
+    const ROWS_PER_PAGE = 3;
+
     const data = ref(null);
     const fetchedData = ref(null);
     const error = ref('');
     const isLoading = ref(true);
     const query = ref('');
-    const page = ref(0);
+    const page = ref(1);
 
     const columns = computed(() => [
       { label: 'Name', value: 'name' },
@@ -72,6 +79,14 @@ export default {
       { label: 'City', value: 'addressCity' },
       { label: 'Website', value: 'website' },
     ]);
+
+    const chunks = computed(() => {
+      const chunksArray = [];
+      for (let i = 0; i < data.value.length; i += ROWS_PER_PAGE) {
+        chunksArray.push(data.value.slice(i, i + ROWS_PER_PAGE));
+      }
+      return chunksArray;
+    });
 
     fetchData(props.endpoint, null, {
       resolve: (json) => {
@@ -104,6 +119,7 @@ export default {
 
     return {
       columns,
+      chunks,
       data,
       error,
       fetchedData,
@@ -111,6 +127,7 @@ export default {
       handleChange,
       query,
       page,
+      ROWS_PER_PAGE,
     };
   },
 };

@@ -2,6 +2,7 @@
 
 .base-table {
   overflow-x: auto;
+  table-layout: fixed;
   border-collapse: collapse;
   position: relative;
   width: 100%;
@@ -23,6 +24,7 @@
     &-column {
       font-weight: 600;
       padding: 1rem;
+      width: 100%;
       border-right: 1px solid $accent-color--light;
       position: relative;
 
